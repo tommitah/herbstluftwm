@@ -20,8 +20,9 @@ hc keyunbind --all
 
 nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
 # pulseaudio
-# picom --experimental-backends --backend glx --config "/home/tommitah/.config/picom/picom-wacky.conf" &
-xcompmgr -cCfF &
+picom --experimental-backends --backend glx --config "/home/tommitah/.config/picom/picom-wacky.conf" &
+# picom --config "/home/tommitah/.config/picom/picom-wacky.conf" &
+# xcompmgr -cCfF &
 nitrogen --restore &
 
 # keybindings
@@ -32,19 +33,25 @@ Mod=Mod4   # Use the super key as the main modifier
 hc keybind $Mod-Control-q quit
 hc keybind $Mod-Control-r reload
 hc keybind $Mod-q close
-### OpenGL (glfw) is broken, so neither kitty nor alacritty is working!
 # hc keybind $Mod-Return spawn "st" # use your $TERMINAL with xterm as fallback
 hc keybind $Mod-Return spawn "alacritty" # use your $TERMINAL with xterm as fallback
 # hc keybind $Mod-Return spawn "kitty --single-instance" # use your $TERMINAL with xterm as fallback
 # hc keybind $Mod-Return spawn "kitty" # use your $TERMINAL with xterm as fallback
+# hc keybind $Mod-Shift-Return spawn scratchpad
 # hc keybind $Mod-Shift-p spawn rofi -show drun -show-icons
 # hc keybind $Mod-p spawn dmenu_run -b -i -l 6 -p 'blast:' -fn 'JetBrainsMono Nerd Font:size=16' -nb '#1F1F28' -sb '#C8C093' -sf '#1F1F28'
 # hc keybind $Mod-p spawn dmenu_run -b -i -l 6 -p 'blast:' -fn 'Iosevka:size=16' -nb '#1F1F28' -sb '#C8C093' -sf '#1F1F28'
 # hc keybind $Mod-p spawn dmenu_run -b -i -l 6 -p 'blast:' -fn 'hermit:size=16' -nb '#000000' -sb '#C8C093' -sf '#1F1F28'
-hc keybind $Mod-p spawn dmenu_run -b -x 1000 -y 500 -z 700 -l 10 -p 'blast:' -fn 'hermit:size=14' -sb '#C8C093' -sf '#1F1F28'
+hc keybind $Mod-p spawn dmenu_run -b -x 1000 -y 500 -z 700 -l 10 -p 'blast:' -fn 'hermit:size=16' -sb '#C8C093' -sf '#1F1F28'
+# hc keybind $Mod-Shift-p spawn /home/tommitah/scripts/opensite.sh
 hc keybind $Mod-Control-a spawn setxkbmap -layout us
 hc keybind $Mod-Control-s spawn setxkbmap -layout fi
-hc keybind $Mod-e spawn /home/tommitah/git-repos/neovide/target/release/neovide .
+# hc keybind $Mod-e spawn /home/tommitah/git-repos/neovide/target/release/neovide .
+hc keybind $Mod-e spawn pulseaudio-equalizer-gtk
+hc keybind $Mod-b spawn firefox
+hc keybind $Mod-d spawn Discord
+hc keybind $Mod-n spawn playerctl next
+hc keybind $Mod-Shift-n spawn playerctl previous
 
 # basic movement in tiling and floating mode
 # focusing clients
@@ -90,7 +97,13 @@ hc keybind $Mod-Control-l       resize right +$resizestep
 hc set default_frame_layout 2
 hc load '(clients max:0)'
 
-tag_names=( {1..5} )
+# icon-0 = ''
+# icon-1 = ''
+# icon-2 = ''
+# icon-3 = ''
+# icon-4 = ''
+# tag_names=( {1..5} )
+tag_names=("" "" "" "" "")
 tag_keys=( {1..5} 0 )
 
 hc rename default "${tag_names[0]}" || true
@@ -109,7 +122,9 @@ done
 
 # layouting
 hc keybind $Mod-r remove
-hc keybind $Mod-f floating toggle
+# this one changes the layout of the whole tag to floating
+# hc keybind $Mod-f floating toggle
+hc keybind $Mod-f attr clients.focus.floating toggle
 hc keybind $Mod-m fullscreen toggle
 hc keybind $Mod-Shift-f set_attr clients.focus.floating toggle
 hc keybind $Mod-Shift-d set_attr clients.focus.decorated toggle
@@ -135,6 +150,7 @@ hc mousebind $Mod-Button3 resize
 hc keybind $Mod-Tab         cycle_all +1
 hc keybind $Mod-Shift-Tab   cycle_all -1
 hc keybind $Mod-g cycle
+hc keybind $Mod-Shift-g cycle -1
 hc keybind $Mod-i jumpto urgent
 
 # theme
@@ -161,7 +177,7 @@ hc attr theme.title_height 20
 hc attr theme.title_when multiple_tabs
 # hc attr theme.title_font 'JetBrainsMono Nerd Font:pixelsize=14'  # example using Xft
 # hc attr theme.title_font 'terminus:pixelsize=14'  # example using Xft
-hc attr theme.title_font 'Iosevka:pixelsize=14'  # example using Xft
+hc attr theme.title_font 'Iosevka:pixelsize=16'  # example using Xft
 # hc attr theme.title_font 'hermit:pixelsize=14'  # example using Xft
 # hc attr theme.title_font '-*-fixed-medium-r-*-*-13-*-*-*-*-*-*-*'
 hc attr theme.title_depth 10  # space below the title's baseline
@@ -198,7 +214,7 @@ hc attr theme.background_color '#141414'
 hc set window_gap 0
 hc set frame_padding 0
 hc set smart_window_surroundings off
-hc set smart_frame_surroundings off
+hc set smart_frame_surroundings on
 hc set mouse_recenter_gap 0
 hc set snap_gap 10
 
