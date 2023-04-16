@@ -1,0 +1,5 @@
+#!/bin/bash
+herbstclient --idle "tag-status" | \
+while read -r; do
+	polybar-msg hook herbstluftwm-tags 1
+done
